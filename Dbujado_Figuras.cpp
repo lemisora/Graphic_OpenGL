@@ -12,18 +12,44 @@ void reshape_cb (int w, int h) {
 
 void display_cb() {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1,1,0); glLineWidth(1);
-	glBegin(GL_LINE_STRIP);
-		glVertex2i(130,060); glVertex2i( 50,060);
-		glVertex2i(130,150); glVertex2i( 50,150);
-	glEnd();
+	glColor3f(0,1,0); glLineWidth(1);
 	glBegin(GL_LINES);
-		glVertex2i( 70,100); glVertex2i(110,100);
-		glVertex2i(150,100); glVertex2i(230,100);
-		glVertex2i(190,140); glVertex2i(190,070);
-		glVertex2i(250,100); glVertex2i(330,100);
-		glVertex2i(290,140); glVertex2i(290,070);
+		//Figuras geométricas 
+		//-Triángulo-
+		glVertex2f(50,100);glVertex2f(100,100);
+		glVertex2f(100,100);glVertex2f(75,150);
+		glVertex2f(75,150);glVertex2f(50,100);
+
+		glColor3f(0,0,1);	/*Cambio de color a azul*/
+		
+		//Cuadrado
+		glVertex2f(150,100);glVertex2f(200,100);
+		glVertex2f(200,100);glVertex2f(200,150);
+		glVertex2f(200,150);glVertex2f(150,150);
+		glVertex2f(150,150);glVertex2f(150,100);
+	
+		glColor3f(1,0,0);	/*Cambio de color a rojo*/
+		
+		//Pentágono
+		glVertex2f(250,100);glVertex2f(300,100);
+		glVertex2f(300,100);glVertex2f(325,150);
+		glVertex2f(325,150);glVertex2f(275,187.5);
+		glVertex2f(275,187.5);glVertex2f(225,150);
+		glVertex2f(225,150);glVertex2f(250,100);
+		
+		glColor3f(0.3,0.8,0.1);
+		
+		//Hexágono
+		glVertex2f(400,100);glVertex2f(450,100);
+		glVertex2f(450,100);glVertex2f(487.5,150);
+		glVertex2f(487.5,150);glVertex2f(450,200);
+		glVertex2f(400,200);glVertex2f(350,200);
+//		glVertex2f(350,200);glVertex2f(325,150);
+		
 	glEnd();
+//	glBegin(GL_LINES);
+//		glVertex2i( 70,100); glVertex2i(110,100);
+//	glEnd();
 	glutSwapBuffers();
 }
 
