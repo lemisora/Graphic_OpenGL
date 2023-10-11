@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <vector>
+
+using namespace std;
 
 FILE *archivo = NULL;
 
@@ -10,6 +13,7 @@ struct Coordinate {
 };
 
 std::vector<Coordinate> coordinates; // Store the coordinates
+float escaladoX = 0.0f, escaladoY = 0.0f;
 
 void reshape_cb(int w, int h) {
 	if (w == 0 || h == 0) return;
@@ -24,12 +28,12 @@ void reshape_cb(int w, int h) {
 void display_cb() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(0, 0, 1);
-	glLineWidth(3);
+	glLineWidth(1);
 	
 	glBegin(GL_LINES);
 	for (const Coordinate& coord : coordinates) {
-		glVertex2f(coord.x1, coord.y1);
-		glVertex2f(coord.x2, coord.y2);
+		glVertex2f(coord.x1*(escaladoX), coord.y1*(escaladoY));
+		glVertex2f(coord.x2*(escaladoX), coord.y2*(escaladoY));
 	}
 	glEnd();
 	
@@ -51,7 +55,7 @@ void initialize(char *location) {
 	
 	float x1, y1, x2, y2;
 	while (fscanf(archivo, "%f %f %f %f", &x1, &y1, &x2, &y2) == 4) {
-		Coordinate coord = { x1+400, y1+250, x2+400, y2+250 };
+		Coordinate coord = { x1, y1, x2, y2};
 		coordinates.push_back(coord); // Store coordinates in the vector
 	}
 	
@@ -66,6 +70,10 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Usage: %s <input_file>\n", argv[0]);
 		return EXIT_FAILURE;
 	}
+	
+	printf("Ingrese la cantidad de escalado que quiere: \n");
+	cin >> escaladoX;
+	escaladoY = escaladoX;
 	
 	glutInit(&argc, argv);
 	initialize(argv[1]);
