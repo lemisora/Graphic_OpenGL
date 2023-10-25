@@ -29,7 +29,15 @@ void display_cb() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glColor3f(0, 0, 1);
 	glLineWidth(1);
-	
+
+  glBegin(GL_LINES);
+	for (const Coordinate& coord : coordinates) {
+		glVertex2f(coord.x1, coord.y1);
+		glVertex2f(coord.x2, coord.y2);
+	}
+	glEnd();
+ 
+
 	glBegin(GL_LINES);
 	for (const Coordinate& coord : coordinates) {
 		glVertex2f(coord.x1*(escaladoX), coord.y1*(escaladoY));

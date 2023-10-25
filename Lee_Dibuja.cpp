@@ -51,7 +51,7 @@ void initialize(char *location) {
 	
 	float x1, y1, x2, y2;
 	while (fscanf(archivo, "%f %f %f %f", &x1, &y1, &x2, &y2) == 4) {
-		Coordinate coord = { x1+400, y1+250, x2+400, y2+250 };
+		Coordinate coord = { x1, y1, x2, y2 };
 		coordinates.push_back(coord); // Store coordinates in the vector
 	}
 	
