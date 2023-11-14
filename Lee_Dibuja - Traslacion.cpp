@@ -14,7 +14,7 @@ std::vector<Coordinate> coordinates; //vector para guardar las coordenadas
 float trasladoX = 0, trasladoY = 0;
 
 std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
-float animationDuration = 2.0f; // Duration of the translation animation in seconds
+float animationDuration = 1.5f; // Duration of the translation animation in seconds
 
 void updateTranslation() {
 	// Calculate the elapsed time since the start of the animation
