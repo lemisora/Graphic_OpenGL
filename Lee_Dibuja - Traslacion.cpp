@@ -24,7 +24,7 @@ void updateTranslation() {
 	// Calculate the progress of the animation (0.0 to 1.0)
 	float progress = elapsedTime / animationDuration;
 	trasladoX = 0.0f + 400.0f * progress; // Adjust the factor to control the speed
-	trasladoY = 0.0f + 250.0f * progress;   // Adjust the factor to control the speed
+	trasladoY = 0.0f + 260.0f * progress;   // Adjust the factor to control the speed
 	
 	// If the animation is not complete, request a redisplay
 	if (progress < 1.0f) {
