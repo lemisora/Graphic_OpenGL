@@ -1,8 +1,9 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <iostream>
-#include <cstdio>
 #include <stdlib.h>
+#include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -10,7 +11,31 @@ char c;
 FILE *archivo = NULL;
 int ancho = 800;
 int alto = 600;
-int x = 20, y = alto - 20; // Initialize x and y coordinates
+int x = 20, y = alto;
+
+vector<pair<int,int>> puntos;
+vector<pair<int, int>> puntosTrasl;
+
+float trasladoX, trasladoY;
+
+chrono::time_point<chrono::high_resolution_clock> startTime;
+float animationDuration = 1.5f;
+
+void updateTranslation() {
+	// Calculate the elapsed time since the start of the animation
+	auto currentTime = chrono::high_resolution_clock::now();
+	float elapsedTime = chrono::duration<float>(currentTime - startTime).count();
+	
+	// Calculate the progress of the animation (0.0 to 1.0)
+	float progress = elapsedTime / animationDuration;
+	trasladoX = 0.0f + ancho/2 * progress; // Adjust the factor to control the speed
+	trasladoY = 0.0f + alto * progress;   // Adjust the factor to control the speed
+	
+	// If the animation is not complete, request a redisplay
+	if (progress < 1.0f) {
+		glutPostRedisplay();
+	}
+}
 
 void reshape_cb(int w, int h) {
     if (w == 0 || h == 0)
@@ -26,22 +51,21 @@ void reshape_cb(int w, int h) {
 void display_cb() {
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0, 0, 0);
-    glPointSize(5.0);
+    glPointSize(1.0); 
+
+    glPushMatrix();
+    glTranslatef(trasladoX, trasladoY, 0.0f);
 
     glBegin(GL_POINTS);
-    while ((c = fgetc(archivo)) != EOF) {
-        if (c == '\n') {
-            y -= 5; // Move to the next row
-            x = 20; // Reset x-coordinate
-        } else if (c == '1') {
-            glVertex2i(x, y);
-        }
-        x += 5; // Move to the next column
+    for(const auto &point : puntos) {
+      glVertex2i(point.first, point.second);
     }
     glEnd();
+    glPopMatrix();
 
-    fclose(archivo);
+    //fclose(archivo);
     glFlush();
+    updateTranslation();
     glutSwapBuffers();
 }
 
@@ -53,15 +77,27 @@ void initialize(char *location) {
 
     archivo = fopen(location, "r");
 
+     while((c = fgetc(archivo)) != EOF){
+      if(c == '\n'){
+        y -= 1;
+        x = 20;
+      }else if(c == '1'){
+        puntos.push_back({x,y});
+      }
+      x += 1;
+    }
+    fclose(archivo);
+
     glutDisplayFunc(display_cb);
     glutReshapeFunc(reshape_cb);
 
-    glClearColor(1.f, 1.f, 1.f, 1.f); 
+    glClearColor(1.f, 1.f, 1.f, 1.f);
 }
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
     initialize(argv[1]);
+    glutReshapeFunc(reshape_cb);
     glutMainLoop();
     return 0;
 }

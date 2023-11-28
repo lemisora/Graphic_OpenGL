@@ -9,7 +9,8 @@ char c;
 FILE *archivo = NULL;
 int ancho = 800;
 int alto = 600;
-int x = 20, y = alto - 20; // Initialize x and y coordinates
+int deltaX, delta = 5;
+int x = 20, y = alto; // Initialize x and y coordinates
 
 void reshape_cb(int w, int h) {
     if (w == 0 || h == 0)
@@ -25,17 +26,17 @@ void reshape_cb(int w, int h) {
 void display_cb() {
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(0, 0, 0);
-    glPointSize(5.0);
+    glPointSize(1.0);
 
     glBegin(GL_POINTS);
     while ((c = fgetc(archivo)) != EOF) {
         if (c == '\n') {
-            y -= 5; // Move to the next row
+            y -= delta; // Move to the next row
             x = 20; // Reset x-coordinate
         } else if (c == '1') {
             glVertex2i(x, y);
         }
-        x += 5; // Move to the next column
+        x += delta; // Move to the next column
     }
     glEnd();
 
@@ -61,6 +62,7 @@ void initialize(char *location) {
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
     initialize(argv[1]);
+    delta = stoi(string(1, argv[2][0]));
     glutMainLoop();
     return 0;
 }
